@@ -1,6 +1,5 @@
 # signal-giphy
 
-
 ## Devlog
 
 Hello! I'll try to jot down thoughts here as I work, as well as a rough timetable.
@@ -9,18 +8,34 @@ To begin, I'll break down my anticipated work and how I think I might tackle thi
 
 ### Choices
 
-
 #### Boilerplate: CRA + TS + Redux
 
 To start, I opted for the Typescript+Redux template for CRA, since I don't want to waste time on Redux setup boilerplate. To be honest it's been a minute since I set up a Redux app - I've been mostly using Apollo Client with GraphQL and hadn't felt the need to pull Redux back into any recent projects. I'm also pretty interested in trying [Recoil](https://recoiljs.org/) the next time I do a small app like this.
 
 #### State shape
 
-TODO
+I'm keeping it simple on the Redux side. There's only two pieces of state that appear to be reused in multiple components: the search term, and the currently focused GIF (for full screen view). The former will be sourced from a search component and utilized in the result grid. The latter will be updated from the grid (on click) but rendered in a separate modal component.
+
+So for the time being, my state is:
+
+```
+{
+  gifs: {
+    searchQuery: string,
+    focusedGifId: string
+  }
+}
+```
 
 #### Async
 
-TODO
+All the fetching can be done pretty easily using the Giphy SDK. However, their out-of-the-box components contain some... strange design decisions. Namely, coupling the `Grid` component with the data-fetching functions from the SDK. The Grid accepts a fetcher function as a prop and calls it internally; it doesn't provide a way for the user to call it themselves and pass the data along manually. For that reason, it's going to be awkward integrating the Giphy fetching functionality into a more typical Redux async flow, like thunk actions.
+
+I opted to err on the side of working with the tools provided instead of against them. Having a library with pre-built solutions provided by a third party service is nearly always a benefit versus DIY (i.e. _Not Invented Here_ syndrome). So rather than put the async code into the Redux logic, I'll just do the fetching within the normal component lifecycle and use Redux purely as a state store.
+
+It was pretty trivial to whip up a hook which returns a Giphy gifs fetcher function - basically a fetcher function factory (glad I don't have to say that out loud). It returns the right fetcher based on the search term (if any).
+
+I followed that up with another hook that fetches a single GIF for the lightbox. This is a bit more typical async faire (since Giphy does the sensible thing and lets you fetch it yourself), so I've adopted a pretty common hook design pattern of tracking and returning `{ gif, loading, error }`, and using `useEffect` to refetch the data as the declarative input changes.
 
 #### Design
 
