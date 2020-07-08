@@ -2,6 +2,7 @@ import React from 'react';
 import { GifGrid } from './features/gifs/GifGrid';
 import { Container, makeStyles, Box, Typography } from '@material-ui/core';
 import { GifSearch } from './features/gifs/GifSearch';
+import { GifLightbox } from './features/gifs/GifLightbox';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -24,6 +25,7 @@ function App() {
       <Container component="section" maxWidth="md">
         <GifSearch className={classes.search} fullWidth />
         <GifGrid />
+        <GifLightbox />
       </Container>
     </Box>
   );

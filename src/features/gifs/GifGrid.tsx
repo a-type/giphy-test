@@ -1,14 +1,24 @@
-import React from 'react';
+import * as React from 'react';
 import { Grid } from '@giphy/react-components';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectSearchQuery } from './gifsSlice';
+import { selectSearchQuery, focusGif } from './gifsSlice';
 import { useGiphyFetch } from '../../services/giphy';
 import { useDebounce } from '../../hooks/useDebounce';
+import { GifResult } from '@giphy/js-fetch-api';
 
 export function GifGrid() {
   const searchQuery = useSelector(selectSearchQuery);
   const debouncedSearchQuery = useDebounce(searchQuery, 500);
   const fetchGifs = useGiphyFetch(debouncedSearchQuery, 10);
+
+  const dispatch = useDispatch();
+  const onGifClick = React.useCallback(
+    (gif: GifResult['data'], ev: React.SyntheticEvent) => {
+      ev.preventDefault();
+      dispatch(focusGif(gif.id.toString()));
+    },
+    [],
+  );
 
   return (
     <Grid
@@ -21,9 +31,10 @@ export function GifGrid() {
        * that doesn't have quirks that require key usage.
        */
       key={debouncedSearchQuery}
-      width={800}
+      width={912}
       columns={3}
       fetchGifs={fetchGifs}
+      onGifClick={onGifClick}
     />
   );
 }
