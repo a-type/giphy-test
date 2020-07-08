@@ -58,11 +58,6 @@ const themeFactory = (
           backgroundColor: 'transparent',
         },
       },
-      MuiButton: {
-        root: {
-          textTransform: 'capitalize',
-        },
-      },
       MuiTypography: {
         /**
          * @note I like to tweak the heading sizes in MUI for
@@ -92,7 +87,7 @@ const themeFactory = (
     },
     props: {
       MuiTextField: {
-        variant: 'outlined',
+        variant: 'filled',
       },
       MuiButton: {
         color: 'primary',
