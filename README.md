@@ -1,4 +1,4 @@
-# signal-giphy
+# giphy-test
 
 ## Devlog
 
