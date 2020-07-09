@@ -1,5 +1,27 @@
 # giphy-test
 
+## Some personal style notes
+
+To start, here's a quick overview of some 'default' choices I usually make in a project. I'm not dogmatic about these things, but if it's just me working on something, this represents my choices:
+
+### Create React App for small scope pages, NextJS for larger scope apps
+
+I like to skip the boilerplate. There was a long period of my career when I prided myself on writing custom Webpack configs to suit the exact needs of a project, and I can still do that. But the more projects I start, the more I appreciate getting to the good part quick. Ultimately, it doesn't matter if I don't use the PostCSS loader CRA ships me by default - the experience that's delivered to the user isn't really affected by it being there.
+
+For larger projects I'm really loving NextJS. Server-side rendering seemed like a dream until I tried it - now it's just a given.
+
+### Material UI as a core component library
+
+Again, I went through a phase of Not Invented Here where I enjoyed building up my own basic components from scratch. I learned a lot from that. But when I finally dove into the codebase of Material UI to see what I was missing out on, I started to understand the incredible wealth of experience gathered from all the contributors far surpasses anything I could do on my own. As a solo developer or on a team, there's always a level of scarcity - of time, focus, expertise. I want to be able to deliver a first-rate app experience in terms of accessibility, micro-interactions, and consistent design - without those things taking all my time away from actually implementing the real functionality of the app. MUI enables that with a level of customizability which I would say is unparalleled in the current React world.
+
+### Typescript, strict mode
+
+Strict mode sometimes feels like overkill. I definitely considered dropping it on this project due to the time constraints. But I do think that addressing the problem of `null` pays for itself eventually, regardless of scale. I'd rather spend my time annotating my functions thoroughly (a well-defined quantity of work) than hunting a bug at runtime (a potentially undefined quantity of work). It's far easier to start in strict mode than it is to adopt it later.
+
+### Prettier, always
+
+I adopted Prettier a few years ago and now I can't live without it. In my opinion it's a no-brainer for teams of any size. Prettier is not just about code style opinions, it's about freeing up my headspace from having to think about whether I was supposed to put the ternary operator characters on a new line or not. I can just focus on the logic, hit save, and the code sorts itself out. It really has been an unexpected game-changer for my efficiency.
+
 ## Devlog
 
 Hello! I'll try to jot down thoughts here as I work, as well as a rough timetable.
@@ -64,6 +86,14 @@ Another thing missing from Giphy's implementation is virtualization. When GIFs a
 #### Improvements to state and request efficiency
 
 The nice thing about moving the Giphy data into my state store is that I now have a cached data item for each GIF I can lookup by ID at my command. That means I can eliminate the unnecessary fetch of a GIF when I open it in lightbox mode. Instead, I just select the GIF out of my store when the user chooses one by storing its ID. I removed the extra request and replaced it with a selector, which worked great.
+
+#### Pivoting to async Redux
+
+Now that I'm no longer relying on Giphy's opinionated fetch system with Grid to fetch GIFs, I needed to start thinking about how to integrate asynchronous fetching into Redux.
+
+Historically I've used `redux-saga`, and I'm still a fan of the generator pattern for asynchronous control flow. Describing effects rather than executing them is incredibly powerful once you get over the learning curve. However, I knew this code was going to need to be read and understood by others (hello!), and I believe in taking such things into consideration when making choices on libraries and patterns. There are a multitude of ways to solve problems in code; it's not really about whether I _can_ solve it, but _how_ and _why_. After using `redux-saga` on a team of diverse industry backgrounds and varying experience, I know firsthand how much of a burden the learning curve can be, even with the benefits of the more functional model.
+
+So instead, I went back to the basics with `redux-thunk`. It's a solid pattern, requires little boilerplate, and the code is pretty easy to understand if you're familiar with the `async/await` pattern. I'm a fan, and it was nice to use it again - I hadn't done so probably since I started learning Redux 5 or so years ago.
 
 #### Fixing duplication
 
