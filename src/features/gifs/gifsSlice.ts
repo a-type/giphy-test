@@ -33,7 +33,7 @@ export const gifsSlice = createSlice({
   name: 'gifs',
   initialState,
   reducers: {
-    setSearchQuery: (state, action: PayloadAction<string>) => {
+    updateSearchQuery: (state, action: PayloadAction<string>) => {
       state.searchQuery = action.payload;
     },
     focusGif: (state, action: PayloadAction<string>) => {
@@ -70,7 +70,14 @@ export const gifsSlice = createSlice({
 
 export const { reducer } = gifsSlice;
 
-export const { focusGif, clearGifFocus } = gifsSlice.actions;
+export const {
+  focusGif,
+  clearGifFocus,
+  requestGifs,
+  receiveGifs,
+  gifsRequestFailure,
+  updateSearchQuery,
+} = gifsSlice.actions;
 
 export const selectSearchQuery = (state: RootState) => state.gifs.searchQuery;
 export const selectFocusedGifId = (state: RootState) => state.gifs.focusedGifId;
@@ -137,7 +144,7 @@ export function setSearchQuery(
 ): ThunkAction<void, RootState, undefined, Action> {
   return function (dispatch, getState) {
     // first, update the store with the new search term
-    dispatch(gifsSlice.actions.setSearchQuery(query));
+    dispatch(gifsSlice.actions.updateSearchQuery(query));
 
     // then, call a debounced function to fetch new GIFs based on the term
 
