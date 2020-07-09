@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "https://a-type.github.io/giphy-test/static/css/main.69eda509.chunk.css",
+    "main.js": "https://a-type.github.io/giphy-test/static/js/main.4038eee8.chunk.js",
+    "main.js.map": "https://a-type.github.io/giphy-test/static/js/main.4038eee8.chunk.js.map",
+    "runtime-main.js": "https://a-type.github.io/giphy-test/static/js/runtime-main.f66c5973.js",
+    "runtime-main.js.map": "https://a-type.github.io/giphy-test/static/js/runtime-main.f66c5973.js.map",
+    "static/js/2.5b609aa9.chunk.js": "https://a-type.github.io/giphy-test/static/js/2.5b609aa9.chunk.js",
+    "static/js/2.5b609aa9.chunk.js.map": "https://a-type.github.io/giphy-test/static/js/2.5b609aa9.chunk.js.map",
+    "index.html": "https://a-type.github.io/giphy-test/index.html",
+    "precache-manifest.87048cd7364288ae97b7013e598c6b0c.js": "https://a-type.github.io/giphy-test/precache-manifest.87048cd7364288ae97b7013e598c6b0c.js",
+    "service-worker.js": "https://a-type.github.io/giphy-test/service-worker.js",
+    "static/css/main.69eda509.chunk.css.map": "https://a-type.github.io/giphy-test/static/css/main.69eda509.chunk.css.map",
+    "static/js/2.5b609aa9.chunk.js.LICENSE.txt": "https://a-type.github.io/giphy-test/static/js/2.5b609aa9.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f66c5973.js",
+    "static/js/2.5b609aa9.chunk.js",
+    "static/css/main.69eda509.chunk.css",
+    "static/js/main.4038eee8.chunk.js"
+  ]
+}
