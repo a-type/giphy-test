@@ -6,7 +6,7 @@ Hello! I'll try to jot down thoughts here as I work, as well as a rough timetabl
 
 To begin, I'll break down my anticipated work and how I think I might tackle this based on the requirements. I like to use Github's built-in project management tools for simple projects, so I'll be making some cards and a board there. If you're interested in how I broke down the work initially, the issue list should show the history. Of course, things rarely go perfectly to plan. I'll try to tag the issues with the time spent as well to keep the timeline transparent.
 
-### Choices
+### Day 1 (Hours 0-2)
 
 #### Boilerplate: CRA + TS + Redux
 
@@ -39,7 +39,25 @@ I followed that up with another hook that fetches a single GIF for the lightbox.
 
 #### Design
 
-TODO
+The page design is very minimal right now; a single column of GIFs with a search bar that sticks to the top.
+
+### Day 2 (Hrs 2-#)
+
+Starting out on my second session of work for this project, I reflected a bit on the functionality so far. There are a few things I'm not thrilled about.
+
+Because of the design if Giphy's own `Grid` component, I don't really have access to the GIFs which are fetched as part of the main "list GIFs" operation on the page. It requires me to pass a fetcher function in as a prop, and never really gives me a chance to cache or otherwise store the fetched data in state. This feels more and more like an antipattern in their tooling to me - it definitely gets you off the ground quick, but the cost is basically any level of flexibility.
+
+Because of that, I never store the GIF data in my application's managed state in Redux, so I don't have a way to reuse that data when I'm rendering GIFs in a different context - specifically, the lightbox full-screen view. Instead, I opted to refetch the GIF in that view. That's an extra request that really isn't necessary.
+
+On top of that, I'd like to have a bit more freedom in general in how I display the grid of GIFs. When I started on the project, before thinking about implementation, I had ideas about cool animations or a more tailored experience than the `Grid` component allows (again, ease of use vs. flexibility).
+
+So with that, I decided to focus an hour or so on coming up with a better solution for my needs.
+
+#### Creating a new Masonry Grid
+
+To be honest, I kind of wanted to try to make a masonry grid anyway. It's a fun challenge. I needed a good starting point, so I referred to Giphy's source code and noticed they're using one of their packages, `@giphy/js-util`, to do measurements on the GIF images, which I could also build from.
+
+But as long as I'm making one from scratch, why not make it better? Giphy's Grid relied on the user supplying a static width, which makes responsiveness a bit more fiddly to pull off. It's easy enough to measure the width of an element, so I could incorporate that to bring some intelligence to the layout.
 
 ## CRA boilerplate
 

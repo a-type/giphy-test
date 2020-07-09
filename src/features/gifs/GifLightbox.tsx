@@ -1,41 +1,23 @@
 import * as React from 'react';
-import { makeStyles, Theme, Modal, Paper } from '@material-ui/core';
+import { Dialog } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectFocusedGifId, clearGifFocus } from './gifsSlice';
+import { clearGifFocus, selectFocusedGif } from './gifsSlice';
 import { Gif } from '@giphy/react-components';
-import { useGiphyGif } from '../../services/giphy';
+import { useWindowWidth } from '../../hooks/useWindowWidth';
 
-export type GifLightboxProps = {};
-
-const useStyles = makeStyles<Theme, GifLightboxProps>((theme) => ({
-  paper: {
-    position: 'absolute',
-    width: 400 + theme.spacing(4),
-    padding: theme.spacing(2),
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-  },
-}));
-
-export function GifLightbox(props: GifLightboxProps) {
-  const classes = useStyles(props);
-  const {} = props;
-
-  const focusedId = useSelector(selectFocusedGifId);
-
-  const { gif, loading, error } = useGiphyGif(focusedId);
+export function GifLightbox() {
+  const gif = useSelector(selectFocusedGif);
 
   const dispatch = useDispatch();
   const onClose = React.useCallback(() => {
     dispatch(clearGifFocus());
   }, [dispatch]);
 
+  const windowWidth = useWindowWidth();
+
   return (
-    <Modal open={!!focusedId} onClose={onClose}>
-      <Paper className={classes.paper}>
-        {!!gif && <Gif gif={gif} width={400} />}
-      </Paper>
-    </Modal>
+    <Dialog open={!!gif} onClose={onClose} maxWidth={false}>
+      {!!gif && <Gif gif={gif} width={windowWidth * 0.75} />}
+    </Dialog>
   );
 }

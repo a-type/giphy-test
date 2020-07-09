@@ -7,3 +7,7 @@ declare namespace NodeJS {
     REACT_APP_GIPHY_KEY: string;
   }
 }
+
+declare module 'inteobs' {
+  export default IntersectionObserver;
+}
