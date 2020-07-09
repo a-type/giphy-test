@@ -93,7 +93,7 @@ export function GifGrid({ gap = 8 }: { gap?: number }) {
   const loading = useSelector(selectLoadingGifsPage);
   const hasNextPage = useSelector(selectHasNextPage);
 
-  // custom masonry grid code below
+  /** @note custom masonry grid code below */
 
   // column count is computed responsively
   const columns = useColumns();

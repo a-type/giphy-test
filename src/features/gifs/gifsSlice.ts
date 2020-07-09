@@ -33,6 +33,11 @@ export const gifsSlice = createSlice({
   name: 'gifs',
   initialState,
   reducers: {
+    /**
+     * @note in case you're not familiar with redux toolkit, the reducers below
+     * are using Immer to mimic a mutable interface for the store - I'm *not* directly
+     * mutating the store in a reducer!
+     */
     updateSearchQuery: (state, action: PayloadAction<string>) => {
       state.searchQuery = action.payload;
     },
@@ -59,6 +64,7 @@ export const gifsSlice = createSlice({
       state.hasNextPage = state.gifs.length <= action.payload.totalCount;
       state.loadingGifsPage = false;
     },
+    /** @note I didn't end up using the error (or ever encountering one), but it's here for reference */
     gifsRequestFailure: (state, action: PayloadAction<{ error: string }>) => {
       state.networkError = action.payload.error;
       state.loadingGifsPage = false;

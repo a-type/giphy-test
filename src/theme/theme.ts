@@ -1,7 +1,6 @@
 import { createMuiTheme } from '@material-ui/core';
 import { ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 import colors from './colors';
-import { generateShadows } from './shadows';
 
 const baseDarkPalette: ThemeOptions['palette'] = {
   type: 'dark',
@@ -41,14 +40,10 @@ const { palette: lightPalette, breakpoints } = createMuiTheme({
 });
 const { palette: darkPalette } = createMuiTheme({ palette: baseDarkPalette });
 
-const themeFactory = (
-  palette: ThemeOptions['palette'],
-  shadows: ThemeOptions['shadows'],
-) =>
+const themeFactory = (palette: ThemeOptions['palette']) =>
   createMuiTheme({
     palette,
     shape: {},
-    shadows,
     typography: {
       fontSize: 16,
     },
@@ -98,8 +93,4 @@ const themeFactory = (
     },
   });
 
-export const lightTheme = themeFactory(lightPalette, generateShadows());
-export const darkTheme = themeFactory(
-  darkPalette,
-  generateShadows(colors.blackRgb, colors.trueBlackRgb),
-);
+export const darkTheme = themeFactory(darkPalette);

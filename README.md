@@ -1,10 +1,10 @@
 # giphy-test
 
-## Some personal style notes
+## A recap of choices made
 
-To start, here's a quick overview of some 'default' choices I usually make in a project. I'm not dogmatic about these things, but if it's just me working on something, this represents my choices:
+To start, here's a quick overview of some 'default' choices I usually make in a project. I'm not dogmatic about these things, but if it's just me working on something, this represents my choices. In the code itself, I also put `@note` annotations in various comments where I thought something was worth explaining.
 
-### Create React App for small scope pages, NextJS for larger scope apps
+### Create React App for small scope pages (NextJS for larger scope apps)
 
 I like to skip the boilerplate. There was a long period of my career when I prided myself on writing custom Webpack configs to suit the exact needs of a project, and I can still do that. But the more projects I start, the more I appreciate getting to the good part quick. Ultimately, it doesn't matter if I don't use the PostCSS loader CRA ships me by default - the experience that's delivered to the user isn't really affected by it being there.
 
@@ -14,6 +14,8 @@ For larger projects I'm really loving NextJS. Server-side rendering seemed like 
 
 Again, I went through a phase of Not Invented Here where I enjoyed building up my own basic components from scratch. I learned a lot from that. But when I finally dove into the codebase of Material UI to see what I was missing out on, I started to understand the incredible wealth of experience gathered from all the contributors far surpasses anything I could do on my own. As a solo developer or on a team, there's always a level of scarcity - of time, focus, expertise. I want to be able to deliver a first-rate app experience in terms of accessibility, micro-interactions, and consistent design - without those things taking all my time away from actually implementing the real functionality of the app. MUI enables that with a level of customizability which I would say is unparalleled in the current React world.
 
+I also like to use Material-UI's default JSS styling solution, which is bundled with the library. I've tried various JSS and CSS solutions over the years, and I've found they're all pretty good. Convenience is really the factor here.
+
 ### Typescript, strict mode
 
 Strict mode sometimes feels like overkill. I definitely considered dropping it on this project due to the time constraints. But I do think that addressing the problem of `null` pays for itself eventually, regardless of scale. I'd rather spend my time annotating my functions thoroughly (a well-defined quantity of work) than hunting a bug at runtime (a potentially undefined quantity of work). It's far easier to start in strict mode than it is to adopt it later.
@@ -21,6 +23,16 @@ Strict mode sometimes feels like overkill. I definitely considered dropping it o
 ### Prettier, always
 
 I adopted Prettier a few years ago and now I can't live without it. In my opinion it's a no-brainer for teams of any size. Prettier is not just about code style opinions, it's about freeing up my headspace from having to think about whether I was supposed to put the ternary operator characters on a new line or not. I can just focus on the logic, hit save, and the code sorts itself out. It really has been an unexpected game-changer for my efficiency.
+
+### Testing
+
+I'll admit up front I don't do test-driven development universally. Like many techniques, I find it has a place. I generally will write unit tests first if I know there is a well defined, small unit of behavior and I have ideas about the expected outcomes. But I find in a lot of projects, especially explorations like this one, if I write tests first they quickly become irrelevant as the implementation draws out new details I didn't anticipate.
+
+For this project, I opted to wait until the end for testing, and I used it concisely to ensure I'd covered some corner cases and double-check that my behaviors worked as expected.
+
+### Masonry grid
+
+Initially, I used an out-of-the-box grid solution from Giphy to implement the requirements. However, I grew a bit dissatisfied with some aspects of the usage. Since I had a good chunk of time remaining, I decided to try making my own masonry layout, since I already understood the theory of it. I also wanted to incorporate element virtualization (windowing / culling), because rendering hundreds of GIFs as you scroll takes a toll on performance. I was able to accomplish these objectives, although it did comprise the bulk of the work. There's more detail in the devlog.
 
 ## Devlog
 
@@ -33,6 +45,10 @@ To begin, I'll break down my anticipated work and how I think I might tackle thi
 #### Boilerplate: CRA + TS + Redux
 
 To start, I opted for the Typescript+Redux template for CRA, since I don't want to waste time on Redux setup boilerplate. To be honest it's been a minute since I set up a Redux app - I've been mostly using Apollo Client with GraphQL and hadn't felt the need to pull Redux back into any recent projects. I'm also pretty interested in trying [Recoil](https://recoiljs.org/) the next time I do a small app like this.
+
+#### Material UI
+
+As usual, I whipped up the basic scaffolding for the Material-UI component library, including a simple dark theme.
 
 #### State shape
 
@@ -61,7 +77,7 @@ I followed that up with another hook that fetches a single GIF for the lightbox.
 
 #### Design
 
-The page design is very minimal right now; a single column of GIFs with a search bar that sticks to the top.
+The page design is very minimal right now; a single column of GIFs with a search bar that sticks to the top. I don't anticipate that changing much.
 
 ### Day 2 (Hrs 2-7)
 
@@ -105,7 +121,11 @@ To fix that, I had to implement a basic list deduplication technique using the i
 
 The rest of my time during this session was just polishing the details. I added an animation as GIFs appear onscreen - nothing much, just a small touch. I also made the lightbox expand to take up 3/4 of the screen width.
 
-## CRA boilerplate
+### Day 3 (Hrs 7-8)
+
+The final session was basically figuring out the deployment (pretty easy with Github Pages and Github Actions) and writing a few simple unit tests, then completing the documentation you're reading.
+
+## CRA boilerplate stuff below!
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
