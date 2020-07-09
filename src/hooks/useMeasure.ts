@@ -15,7 +15,7 @@ export function useMeasure<T extends HTMLElement = HTMLElement>() {
       ro.observe(ref.current);
       return () => ro.disconnect();
     }
-  }, []);
+  }, [ro]);
 
   return [{ ref }, bounds] as const;
 }

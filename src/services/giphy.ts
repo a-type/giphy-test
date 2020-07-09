@@ -1,4 +1,3 @@
-import { GiphyFetch, GifResult } from '@giphy/js-fetch-api';
-import { useState, useEffect } from 'react';
+import { GiphyFetch } from '@giphy/js-fetch-api';
 
 export const giphy = new GiphyFetch(process.env.REACT_APP_GIPHY_KEY);

@@ -85,7 +85,7 @@ export function GifGrid({ gap = 8 }: { gap?: number }) {
       ev.preventDefault();
       dispatch(focusGif(gif.id.toString()));
     },
-    [],
+    [dispatch],
   );
 
   // selecting various state pieces we need to render the grid
