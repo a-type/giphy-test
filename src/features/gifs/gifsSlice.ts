@@ -7,6 +7,7 @@ import {
 import { RootState } from '../../app/store';
 import { IGif } from '@giphy/js-types';
 import { giphy } from '../../services/giphy';
+import { deduplicateById } from '../../utils/deduplicateById';
 
 const GIF_PAGE_SIZE = 50;
 
@@ -54,7 +55,7 @@ export const gifsSlice = createSlice({
       state,
       action: PayloadAction<{ gifs: IGif[]; totalCount: number }>,
     ) => {
-      state.gifs = state.gifs.concat(action.payload.gifs);
+      state.gifs = deduplicateById(state.gifs.concat(action.payload.gifs));
       state.hasNextPage = state.gifs.length <= action.payload.totalCount;
       state.loadingGifsPage = false;
     },

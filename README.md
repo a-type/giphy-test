@@ -41,7 +41,7 @@ I followed that up with another hook that fetches a single GIF for the lightbox.
 
 The page design is very minimal right now; a single column of GIFs with a search bar that sticks to the top.
 
-### Day 2 (Hrs 2-#)
+### Day 2 (Hrs 2-7)
 
 Starting out on my second session of work for this project, I reflected a bit on the functionality so far. There are a few things I'm not thrilled about.
 
@@ -58,6 +58,22 @@ So with that, I decided to focus an hour or so on coming up with a better soluti
 To be honest, I kind of wanted to try to make a masonry grid anyway. It's a fun challenge. I needed a good starting point, so I referred to Giphy's source code and noticed they're using one of their packages, `@giphy/js-util`, to do measurements on the GIF images, which I could also build from.
 
 But as long as I'm making one from scratch, why not make it better? Giphy's Grid relied on the user supplying a static width, which makes responsiveness a bit more fiddly to pull off. It's easy enough to measure the width of an element, so I could incorporate that to bring some intelligence to the layout.
+
+Another thing missing from Giphy's implementation is virtualization. When GIFs are offscreen, there's no reason to keep rendering them. One of the nice things about a masonry layout is that, while it can be trickier to implement, it makes virtualization pretty simple since all elements are positioned in an absolute sense. You simply don't render the elements you can't see anymore. To accomplish that, I just had to track scroll position and incorporate it into my masonry calculations.
+
+#### Improvements to state and request efficiency
+
+The nice thing about moving the Giphy data into my state store is that I now have a cached data item for each GIF I can lookup by ID at my command. That means I can eliminate the unnecessary fetch of a GIF when I open it in lightbox mode. Instead, I just select the GIF out of my store when the user chooses one by storing its ID. I removed the extra request and replaced it with a selector, which worked great.
+
+#### Fixing duplication
+
+One of the quirks of pulling infinite paginated items is that items can be duplicated when you don't have a stable cursor-based pagination system. Giphy uses offset-based pagination, so duplicate items show up occasionally. React dutifully warns when it detects items with identical `key` props in the list, which is how I picked up on it.
+
+To fix that, I had to implement a basic list deduplication technique using the id of each GIF object. It's kind of a classic interview puzzle I guess. I did it using a hash map, storing the count of each id on a first pass of the list, then decrementing those counts on a second pass until they reached 0 before adding the item back to a new list. Harder to explain in words, but [the code is documented](./src/utils/deduplicateById.ts) and unit tested just to be sure.
+
+#### Polish
+
+The rest of my time during this session was just polishing the details. I added an animation as GIFs appear onscreen - nothing much, just a small touch. I also made the lightbox expand to take up 3/4 of the screen width.
 
 ## CRA boilerplate
 
