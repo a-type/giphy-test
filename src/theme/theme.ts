@@ -18,27 +18,10 @@ const baseDarkPalette: ThemeOptions['palette'] = {
     paper: colors.trueBlack,
   },
 };
-const baseLightPalette: ThemeOptions['palette'] = {
-  type: 'light',
-  text: {
-    primary: colors.black,
-  },
-  primary: {
-    main: colors.black,
-  },
-  secondary: {
-    main: colors.medium,
-  },
-  background: {
-    default: colors.bright,
-    paper: colors.white,
-  },
-};
 
-const { palette: lightPalette, breakpoints } = createMuiTheme({
-  palette: baseLightPalette,
+const { palette: darkPalette, breakpoints } = createMuiTheme({
+  palette: baseDarkPalette,
 });
-const { palette: darkPalette } = createMuiTheme({ palette: baseDarkPalette });
 
 const themeFactory = (palette: ThemeOptions['palette']) =>
   createMuiTheme({
