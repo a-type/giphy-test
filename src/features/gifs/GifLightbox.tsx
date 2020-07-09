@@ -3,7 +3,7 @@ import { Dialog } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearGifFocus, selectFocusedGif } from './gifsSlice';
 import { Gif } from '@giphy/react-components';
-import { useWindowWidth } from '../../hooks/useWindowWidth';
+import { useWindowSize } from '../../hooks/useWindowSize';
 
 export function GifLightbox() {
   const gif = useSelector(selectFocusedGif);
@@ -13,7 +13,9 @@ export function GifLightbox() {
     dispatch(clearGifFocus());
   }, [dispatch]);
 
-  const windowWidth = useWindowWidth();
+  // we want the lightbox to take up a good portion of the screen on
+  // every screen size, so we'll need this
+  const { width: windowWidth } = useWindowSize();
 
   return (
     <Dialog open={!!gif} onClose={onClose} maxWidth={false}>

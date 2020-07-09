@@ -34,8 +34,6 @@ export const gifsSlice = createSlice({
   reducers: {
     setSearchQuery: (state, action: PayloadAction<string>) => {
       state.searchQuery = action.payload;
-      // clear gifs cache when search query changes
-      state.gifs = [];
     },
     focusGif: (state, action: PayloadAction<string>) => {
       state.focusedGifId = action.payload;
@@ -43,10 +41,14 @@ export const gifsSlice = createSlice({
     clearGifFocus: (state) => {
       state.focusedGifId = null;
     },
-    requestGifs: (state) => {
+    requestGifs: (state, action: PayloadAction<{ newSearch: boolean }>) => {
       state.loadingGifsPage = true;
       // every new fetch might have a next page
       state.hasNextPage = true;
+      if (action.payload.newSearch) {
+        // this request resets the cache.
+        state.gifs = [];
+      }
     },
     receiveGifs: (
       state,
@@ -81,20 +83,26 @@ export const selectFocusedGif = (state: RootState) =>
 
 // Async actions
 
-export function fetchNextPage(): ThunkAction<
-  Promise<void>,
-  RootState,
-  undefined,
-  Action
-> {
+/**
+ * Fetches the next page of GIFs according to the
+ * current search query (if any). If no query is provided,
+ * it fetches trending GIFs.
+ */
+export function fetchNextPage({
+  newSearch,
+}: {
+  newSearch: boolean;
+}): ThunkAction<Promise<void>, RootState, undefined, Action> {
   return async function (dispatch, getState) {
-    dispatch(gifsSlice.actions.requestGifs());
+    dispatch(gifsSlice.actions.requestGifs({ newSearch }));
 
     const searchQuery = selectSearchQuery(getState());
     const currentGifsOffset = selectGifs(getState()).length;
+
     try {
       let result;
 
+      // based on the query, choose which type of fetch to do
       if (searchQuery) {
         result = await giphy.search(searchQuery, {
           offset: currentGifsOffset,
@@ -118,6 +126,10 @@ export function fetchNextPage(): ThunkAction<
   };
 }
 
+/**
+ * the action which changes the search query also fires a debounced
+ * function to queue up a refetch of the GIFs with the new search term.
+ */
 let debounceTimeoutHandle: NodeJS.Timeout | null = null;
 export function setSearchQuery(
   query: string,
@@ -135,7 +147,7 @@ export function setSearchQuery(
 
     // queue a new fetch after 500ms of inactivity
     debounceTimeoutHandle = setTimeout(async () => {
-      dispatch(fetchNextPage());
+      dispatch(fetchNextPage({ newSearch: true }));
     }, 500);
   };
 }
